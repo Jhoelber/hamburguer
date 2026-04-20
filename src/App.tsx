@@ -107,26 +107,44 @@ const menuItems = [...burgers, ...sandwiches, ...pizzasMenu, ...combosMenu];
 
 const categories = [
   {
-    name: "Sanduiche",
-    image:
-      "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=300&q=80",
-  },
-  {
-    name: "Pizza",
-    image:
-      "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=300&q=80",
-  },
-  {
-    name: "Combo",
+    name: "Todos",
+    filter: "Todos",
     image:
       "https://images.unsplash.com/photo-1553979459-d2229ba7433b?auto=format&fit=crop&w=300&q=80",
   },
   {
-    name: "Hamburguer",
+    name: "Sanduíches",
+    filter: "Sanduíche",
+    image:
+      "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=300&q=80",
+  },
+  {
+    name: "Pizzas",
+    filter: "Pizza",
+    image:
+      "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=300&q=80",
+  },
+  {
+    name: "Combos",
+    filter: "Combo",
+    image:
+      "https://images.unsplash.com/photo-1553979459-d2229ba7433b?auto=format&fit=crop&w=300&q=80",
+  },
+  {
+    name: "Hambúrgueres",
+    filter: "Hambúrguer",
     image:
       "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=300&q=80",
   },
 ];
+
+const getItemGroup = (item: Burger) => {
+  if (item.category === "Sanduíche" || item.category === "Pizza" || item.category === "Combo") {
+    return item.category;
+  }
+
+  return "Hambúrguer";
+};
 
 function CartIcon() {
   return (
@@ -230,6 +248,7 @@ function CartDrawer({ isOpen, items, orderUrl, onClose, onChangeAmount, onRemove
 function App() {
   const [selected, setSelected] = useState<Record<string, number>>({});
   const [cartOpen, setCartOpen] = useState(false);
+  const [activeCategory, setActiveCategory] = useState("Todos");
 
   const selectedBurgers = useMemo(
     () =>
@@ -240,6 +259,11 @@ function App() {
   );
 
   const totalItems = selectedBurgers.reduce((sum, item) => sum + item.amount, 0);
+
+  const filteredMenuItems = useMemo(
+    () => (activeCategory === "Todos" ? menuItems : menuItems.filter((item) => getItemGroup(item) === activeCategory)),
+    [activeCategory],
+  );
 
   const orderUrl = useMemo(() => {
     const lines =
@@ -342,16 +366,22 @@ function App() {
           </div>
 
           <div className="relative z-10 mt-2 rounded-t-[28px] bg-black/58 px-7 py-6 backdrop-blur-md md:absolute md:inset-x-0 md:bottom-0 md:mt-0 md:px-12">
-            <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5">
               {categories.map((category) => (
                 <article key={category.name} className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
                   <img src={category.image} alt={category.name} className="h-20 w-20 rounded-full object-cover" />
                   <div>
                     <h2 className="font-semibold">{category.name}</h2>
                     <p className="mt-1 text-xs text-white/70">A partir de R$ 29</p>
-                    <a href="#menu" className="mt-2 inline-flex rounded bg-white/12 px-3 py-1 text-xs">
-                      Ver opcoes
-                    </a>
+                    <button
+                      type="button"
+                      className={`mt-2 inline-flex rounded px-3 py-1 text-xs font-bold ${
+                        activeCategory === category.filter ? "bg-[#82b94e] text-[#111111]" : "bg-white/12 text-white"
+                      }`}
+                      onClick={() => setActiveCategory(category.filter)}
+                    >
+                      {activeCategory === category.filter ? "Selecionado" : "Filtrar"}
+                    </button>
                   </div>
                 </article>
               ))}
@@ -362,11 +392,13 @@ function App() {
         <section id="menu" className="bg-[#f7f2ec] px-5 py-14 text-[#1b1510] md:px-10 lg:px-16">
           <div className="mb-9 text-center">
             <p className="font-serif text-lg italic text-[#9f351f]">Mais pedidos</p>
-            <h2 className="mt-2 font-serif text-4xl">Cardápio da casa</h2>
+            <h2 className="mt-2 font-serif text-4xl">
+              {activeCategory === "Todos" ? "Cardápio da casa" : activeCategory}
+            </h2>
           </div>
 
           <div className="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4">
-            {menuItems.map((burger) => {
+            {filteredMenuItems.map((burger) => {
               const amount = selected[burger.name] ?? 0;
 
               return (
