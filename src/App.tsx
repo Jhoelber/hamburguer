@@ -9,7 +9,7 @@ type Burger = {
   category: string;
 };
 
-const whatsappNumber = "5543988012398";
+const whatsappNumber = "5500000000000";
 
 const burgers: Burger[] = [
   {
@@ -45,6 +45,65 @@ const burgers: Burger[] = [
       "https://images.unsplash.com/photo-1520072959219-c595dc870360?auto=format&fit=crop&w=900&q=80",
   },
 ];
+
+const sandwiches: Burger[] = [
+  {
+    name: "Sanduíche Frango Club",
+    description: "Frango grelhado, queijo, alface, tomate e maionese temperada no pão tostado.",
+    price: "R$ 29,00",
+    category: "Sanduíche",
+    image:
+      "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=900&q=80",
+  },
+  {
+    name: "Sanduíche Costela",
+    description: "Costela desfiada, queijo derretido, cebola caramelizada e barbecue.",
+    price: "R$ 36,00",
+    category: "Sanduíche",
+    image:
+      "https://images.unsplash.com/photo-1553909489-cd47e0907980?auto=format&fit=crop&w=900&q=80",
+  },
+];
+
+const pizzasMenu: Burger[] = [
+  {
+    name: "Pizza Pepperoni",
+    description: "Massa fina, molho de tomate, mozzarella, pepperoni e orégano.",
+    price: "R$ 49,00",
+    category: "Pizza",
+    image:
+      "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=900&q=80",
+  },
+  {
+    name: "Pizza Quatro Queijos",
+    description: "Mozzarella, parmesão, provolone, gorgonzola e toque de azeite.",
+    price: "R$ 54,00",
+    category: "Pizza",
+    image:
+      "https://images.unsplash.com/photo-1594007654729-407eedc4be65?auto=format&fit=crop&w=900&q=80",
+  },
+];
+
+const combosMenu: Burger[] = [
+  {
+    name: "Combo Smash",
+    description: "Smash Clássico, batata crocante e bebida gelada.",
+    price: "R$ 44,00",
+    category: "Combo",
+    image:
+      "https://images.unsplash.com/photo-1553979459-d2229ba7433b?auto=format&fit=crop&w=900&q=80",
+  },
+  {
+    name: "Combo Duplo Bacon",
+    description: "Bacon Melt, batata grande, molho especial e bebida.",
+    price: "R$ 58,00",
+    category: "Combo",
+    image:
+      "https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?auto=format&fit=crop&w=900&q=80",
+  },
+];
+
+const menuItems = [...burgers, ...sandwiches, ...pizzasMenu, ...combosMenu];
 
 const categories = [
   {
@@ -174,7 +233,7 @@ function App() {
 
   const selectedBurgers = useMemo(
     () =>
-      burgers
+      menuItems
         .map((burger) => ({ burger, amount: selected[burger.name] ?? 0 }))
         .filter((item) => item.amount > 0),
     [selected],
@@ -223,7 +282,7 @@ function App() {
   return (
     <>
       <main className="min-h-screen bg-[#111111] text-white">
-        <section className="relative min-h-[760px] overflow-hidden bg-[#101010]">
+        <section className="relative overflow-hidden bg-[#101010] pb-6 md:min-h-[760px] md:pb-0">
           <img
             src="https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=1900&q=88"
             alt="Hamburguer artesanal"
@@ -251,9 +310,9 @@ function App() {
             </button>
           </header>
 
-          <div id="home" className="relative z-10 px-7 pt-24 md:px-12 md:pt-32">
+          <div id="home" className="relative z-10 px-7 pb-8 pt-20 md:px-12 md:pt-32">
             <div className="max-w-xl">
-              <h1 className="text-6xl font-light leading-[0.98] tracking-wide text-white/82 md:text-7xl">
+              <h1 className="text-5xl font-light leading-[0.98] tracking-wide text-white/82 sm:text-6xl md:text-7xl">
                 Hamburguer
                 <br />
                 Artesanal
@@ -261,13 +320,16 @@ function App() {
                 da Casa
               </h1>
 
-              <div className="mt-9 flex max-w-sm overflow-hidden rounded-full bg-white/12 p-1 backdrop-blur">
-                <button className="rounded-full bg-[#6e9d3d] px-5 py-3 text-sm font-bold text-white">
-                  Loja
-                </button>
-                <div className="flex flex-1 items-center px-5 text-sm text-white/72">Ver cardapio</div>
-                <a href="#menu" className="flex h-12 w-12 items-center justify-center rounded-full bg-[#bd7414] text-lg">
-                  →
+              <div className="mt-9 max-w-sm rounded-[28px] bg-white/12 p-4 backdrop-blur">
+                <p className="text-sm font-semibold text-white">Escolha seu hambúrguer favorito</p>
+                <p className="mt-1 text-sm text-white/65">
+                  Cardápio com opções artesanais, combos e pedido rápido.
+                </p>
+                <a
+                  href="#menu"
+                  className="mt-4 inline-flex rounded-full bg-[#82b94e] px-5 py-3 text-sm font-black text-[#111111]"
+                >
+                  Ver cardápio
                 </a>
               </div>
 
@@ -279,10 +341,10 @@ function App() {
             </div>
           </div>
 
-          <div className="absolute inset-x-0 bottom-0 z-10 rounded-t-[28px] bg-black/58 px-7 py-6 backdrop-blur-md md:px-12">
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="relative z-10 mt-2 rounded-t-[28px] bg-black/58 px-7 py-6 backdrop-blur-md md:absolute md:inset-x-0 md:bottom-0 md:mt-0 md:px-12">
+            <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
               {categories.map((category) => (
-                <article key={category.name} className="flex items-center gap-4">
+                <article key={category.name} className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
                   <img src={category.image} alt={category.name} className="h-20 w-20 rounded-full object-cover" />
                   <div>
                     <h2 className="font-semibold">{category.name}</h2>
@@ -300,30 +362,30 @@ function App() {
         <section id="menu" className="bg-[#f7f2ec] px-5 py-14 text-[#1b1510] md:px-10 lg:px-16">
           <div className="mb-9 text-center">
             <p className="font-serif text-lg italic text-[#9f351f]">Mais pedidos</p>
-            <h2 className="mt-2 font-serif text-4xl">Hamburgueres da casa</h2>
+            <h2 className="mt-2 font-serif text-4xl">Cardápio da casa</h2>
           </div>
 
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {burgers.map((burger) => {
+          <div className="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4">
+            {menuItems.map((burger) => {
               const amount = selected[burger.name] ?? 0;
 
               return (
-                <article key={burger.name} className="rounded-lg bg-white p-3 shadow-[0_16px_40px_rgba(27,21,16,0.11)]">
+                <article key={burger.name} className="flex h-full flex-col rounded-lg bg-white p-3 shadow-[0_16px_40px_rgba(27,21,16,0.11)]">
                   <div className="aspect-[4/3] overflow-hidden rounded-md bg-[#1b1510]">
                     <img src={burger.image} alt={burger.name} className="h-full w-full object-cover transition duration-500 hover:scale-105" />
                   </div>
-                  <div className="p-2 pt-4">
+                  <div className="flex flex-1 flex-col p-2 pt-4">
                     <div className="flex items-start justify-between gap-3">
-                      <div>
+                      <div className="min-w-0">
                         <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#9f351f]">{burger.category}</p>
                         <h3 className="mt-1 font-bold">{burger.name}</h3>
                       </div>
-                      <span className="font-black text-[#9f351f]">{burger.price}</span>
+                      <span className="shrink-0 font-black text-[#9f351f]">{burger.price}</span>
                     </div>
-                    <p className="mt-3 min-h-20 text-sm leading-6 text-[#6b5f55]">{burger.description}</p>
+                    <p className="mt-3 flex-1 text-sm leading-6 text-[#6b5f55]">{burger.description}</p>
                     <button
                       type="button"
-                      className={`mt-4 w-full rounded-lg px-4 py-3 text-sm font-black ${
+                      className={`mt-5 w-full rounded-lg px-4 py-3 text-sm font-black ${
                         amount > 0 ? "border border-[#9f351f] text-[#9f351f]" : "bg-[#9f351f] text-white"
                       }`}
                       onClick={() => changeAmount(burger, 1)}
@@ -350,7 +412,7 @@ function App() {
           </div>
 
           <div className="grid grid-cols-3 gap-3">
-            {burgers.slice(0, 3).map((burger) => (
+            {menuItems.slice(0, 3).map((burger) => (
               <img key={burger.name} src={burger.image} alt={burger.name} className="h-44 w-full rounded-lg object-cover" />
             ))}
           </div>
